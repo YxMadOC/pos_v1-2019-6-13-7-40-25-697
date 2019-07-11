@@ -21,7 +21,6 @@ function scanBarcodes(barcodes){
                 prev[item]++;
             }else{
                 prev[item] = 1;
-
             }
             return prev;
         }, {});
@@ -42,10 +41,9 @@ function findRelatedGoods(scanResult){
 function checkPromotion(relatedGoods){
     relatedGoods.forEach(item => {
         promotions[0].barcodes.forEach(barcode => {
-            if(item.barcode === barcode){
-                if(item.count >= 2){
-                    item.discount = true;
-                }
+            let discountable = item.barcode === barcode && item.count >= 2;
+            if(discountable){
+                item.discount = true;
             }
         })
     });
