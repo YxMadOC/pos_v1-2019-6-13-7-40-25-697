@@ -7,29 +7,29 @@ const title = "***<没钱赚商店>收据***";
 const upDelimeter = "----------------------\n";
 const downDelimeter = "**********************";
 
-function scanBarcodes(barcodes){
+function scanBarcodes(barcodes) {
     return barcodes.reduce((prev, item) => {
-            if(item.indexOf('-') >= 0){
-                if(item.split('-')[0] in prev){
-                    prev[item.split('-')[0]] += parseFloat(item.split('-')[1]);
-                }else{
-                    prev[item.split('-')[0]] = parseFloat(item.split('-')[1]);
-                }
-                return prev;
-            }
-            if(item in prev){
-                prev[item]++;
-            }else{
-                prev[item] = 1;
+        if (item.indexOf('-') >= 0) {
+            if (item.split('-')[0] in prev) {
+                prev[item.split('-')[0]] += parseFloat(item.split('-')[1]);
+            } else {
+                prev[item.split('-')[0]] = parseFloat(item.split('-')[1]);
             }
             return prev;
-        }, {});
+        }
+        if (item in prev) {
+            prev[item]++;
+        } else {
+            prev[item] = 1;
+        }
+        return prev;
+    }, {});
 }
 
-function findRelatedGoods(scanResult){
+function findRelatedGoods(scanResult) {
     let relatedGoods = [];
     allItems.forEach(item => {
-        if(scanResult[item.barcode]){
+        if (scanResult[item.barcode]) {
             let temp = item;
             temp.count = scanResult[item.barcode];
             relatedGoods.push(temp);
@@ -38,11 +38,11 @@ function findRelatedGoods(scanResult){
     return relatedGoods;
 }
 
-function checkPromotion(relatedGoods){
+function checkPromotion(relatedGoods) {
     relatedGoods.forEach(item => {
         promotions[0].barcodes.forEach(barcode => {
             let discountable = item.barcode === barcode && item.count >= 2;
-            if(discountable){
+            if (discountable) {
                 item.discount = true;
             }
         })
@@ -50,7 +50,7 @@ function checkPromotion(relatedGoods){
     return relatedGoods;
 }
 
-function createReceipt(relatedGoods){
+function createReceipt(relatedGoods) {
     let total = 0;
     let discountTotal = 0;
     relatedGoods = checkPromotion(relatedGoods);
