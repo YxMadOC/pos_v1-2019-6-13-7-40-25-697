@@ -40,12 +40,12 @@ function findRelatedGoods(scanResult) {
 
 function checkPromotion(relatedGoods) {
     relatedGoods.forEach(item => {
-        promotions[0].barcodes.forEach(barcode => {
-            let discountable = item.barcode === barcode && item.count >= 2;
+        if(promotions[0].barcodes.includes(item.barcode)){
+            let discountable = item.count >= 2;
             if (discountable) {
                 item.discount = true;
             }
-        })
+        }
     });
     return relatedGoods;
 }
